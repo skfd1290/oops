@@ -1,0 +1,213 @@
+import java.applet.Applet;
+import java.awt.*;
+
+/*
+<applet code="Smiley" width="400" height="400">
+</applet>
+*/
+
+public class Smiley extends Applet {
+
+    public void paint(Graphics g) {
+
+        // Face
+        g.setColor(Color.YELLOW);
+        g.fillOval(100, 80, 200, 200);
+
+        // Eyes
+        g.setColor(Color.BLACK);
+        g.fillOval(150, 140, 20, 20);
+        g.fillOval(230, 140, 20, 20);
+
+        // Nose
+        g.drawLine(200, 160, 190, 190);
+        g.drawLine(190, 190, 210, 190);
+
+        // Smile
+        g.drawArc(150, 170, 100, 50, 180, 180);
+    }
+}
+
+
+
+
+<html>
+<body>
+
+<applet code="Smiley.class" width="400" height="400">
+</applet>
+
+</body>
+</html>
+
+
+
+
+
+-- cc.java
+import java.applet.Applet;
+import java.awt.*;
+import java.util.Random;
+
+/*
+<applet code="ConcentricCircles.class" width="500" height="500">
+</applet>
+*/
+
+public class cc extends Applet {
+
+    public void paint(Graphics g) {
+
+        Random r = new Random();
+
+        int centerX = 250;
+        int centerY = 250;
+
+        // Draw concentric circles
+        for (int radius = 20; radius <= 120; radius += 10) {
+
+            // Random color
+            Color c = new Color(
+                    r.nextInt(256),
+                    r.nextInt(256),
+                    r.nextInt(256)
+            );
+
+            g.setColor(c);
+
+            // Draw circle
+            g.drawOval(centerX - radius,
+                       centerY - radius,
+                       2 * radius,
+                       2 * radius);
+        }
+    }
+}
+
+
+<html>
+<body>
+
+<applet code="cc.class" width="500" height="500">
+</applet>
+
+</body>
+</html>
+
+
+
+//cal.java
+
+import java.applet.Applet;
+import java.awt.*;
+import java.awt.event.*;
+
+/*
+<applet code="cal.class" width="350" height="450">
+</applet>
+*/
+
+public class cal extends Applet implements ActionListener {
+
+    TextField tf;
+
+    double num1 = 0, num2 = 0, result = 0;
+    String operator = "";
+    boolean startNewNumber = true;
+
+    public void init() {
+
+        setLayout(new BorderLayout());
+
+        // Text field
+        tf = new TextField();
+        tf.setEditable(false);
+        tf.setFont(new Font("Arial", Font.BOLD, 25));
+        add(tf, BorderLayout.NORTH);
+
+        // Button panel
+        Panel p = new Panel();
+        p.setLayout(new GridLayout(4, 4, 5, 5));
+
+        String buttons[] = {
+                "7", "8", "9", "/",
+                "4", "5", "6", "*",
+                "1", "2", "3", "-",
+                "C", "0", "=", "+"
+        };
+
+        for (int i = 0; i < buttons.length; i++) {
+            Button b = new Button(buttons[i]);
+            b.addActionListener(this);
+            p.add(b);
+        }
+
+        add(p, BorderLayout.CENTER);
+    }
+
+    public void actionPerformed(ActionEvent e) {
+
+        String s = e.getActionCommand();
+
+        // Number buttons
+        if (s.matches("[0-9]")) {
+
+            if (startNewNumber) {
+                tf.setText(s);
+                startNewNumber = false;
+            } else {
+                tf.setText(tf.getText() + s);
+            }
+        }
+
+        // Clear button
+        else if (s.equals("C")) {
+
+            tf.setText("");
+            num1 = num2 = result = 0;
+            operator = "";
+            startNewNumber = true;
+        }
+
+        // Equal button
+        else if (s.equals("=")) {
+
+            num2 = Double.parseDouble(tf.getText());
+
+            if (operator.equals("+"))
+                result = num1 + num2;
+
+            else if (operator.equals("-"))
+                result = num1 - num2;
+
+            else if (operator.equals("*"))
+                result = num1 * num2;
+
+            else if (operator.equals("/"))
+                result = num1 / num2;
+
+            tf.setText(String.valueOf(result));
+
+            num1 = result;
+            startNewNumber = true;
+        }
+
+        // Operator buttons
+        else {
+
+            num1 = Double.parseDouble(tf.getText());
+            operator = s;
+            startNewNumber = true;
+        }
+    }
+}
+
+
+<html>
+<body>
+
+<applet code="cal.class" width="350" height="450">
+</applet>
+
+</body>
+</html>
